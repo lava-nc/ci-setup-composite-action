@@ -11,8 +11,7 @@ runs:
     - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9
-        cache: 'poetry'
+        python-version: "3.9"
   
     - name: Install Poetry
       run: | 
@@ -22,15 +21,7 @@ runs:
         python3.9 -m pipx ensurepath
       shell: bash
 
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v3
-      with:
-        path: $GITHUB_WORKSPACE/.local/.cache
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-
     - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root
       shell: bash
 
