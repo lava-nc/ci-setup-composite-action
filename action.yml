@@ -31,5 +31,7 @@ runs:
       shell: bash
 
     - name: Install Lava
-      run: poetry install --no-interaction
+      run: |
+        export CMAKE_ARGS="..."
+        poetry install --no-interaction
       shell: bash
