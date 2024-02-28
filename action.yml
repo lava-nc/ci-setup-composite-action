@@ -20,7 +20,7 @@ runs:
         cache: 'poetry'
 
     - name: Install Poetry
-      run: pipx install poetry --python python${{ inputs.python_ver }}
+      run: pipx install poetry --python python${{ inputs.python_ver }} --force
       shell: bash
 
     - name: Load cached venv
