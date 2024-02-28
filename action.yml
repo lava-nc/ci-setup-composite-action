@@ -28,13 +28,17 @@ runs:
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: |
-        source /home/$(whoami)/.local/pipx/venvs/poetry/bin/activate
+        if [ "$(whoami)" = "ci-lava" ]; then
+          source /home/$(whoami)/.local/pipx/venvs/poetry/bin/activate
+        fi
         poetry install --no-interaction --no-root
       shell: bash
 
     - name: Install Lava
       run: |
-        source /home/$(whoami)/.local/pipx/venvs/poetry/bin/activate
+        if [ "$(whoami)" = "ci-lava" ]; then
+          source /home/$(whoami)/.local/pipx/venvs/poetry/bin/activate
+        fi
         export CMAKE_ARGS="..."
         poetry install --no-interaction
       shell: bash
