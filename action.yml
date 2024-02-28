@@ -5,18 +5,23 @@ inputs:
     description: 'repository name'
     required: false
     default: 'lava'
+  python_ver:
+    description: 'python version to use e.g. 3.10'
+    required: false
+    default: '3.10'
+
 runs:
   using: "composite"
-  steps:        
-    - name: Install Poetry
-      run: pipx install poetry
-      shell: bash
-
-    - name: Set up Python 3.10
+  steps:   
+    - name: Set up Python ${{ inputs.python_ver }}
       uses: actions/setup-python@v4
       with:
-        python-version: "3.10"
+        python-version: "${{ inputs.python_ver }}"
         cache: 'poetry'
+
+    - name: Install Poetry
+      run: "pipx install poetry --python python${{ inputs.python_ver }}"
+      shell: bash
 
     - name: Load cached venv
       id: cached-poetry-dependencies
