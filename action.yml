@@ -20,7 +20,10 @@ runs:
         cache: 'poetry'
 
     - name: Install Poetry
-      run: pipx install poetry --python python${{ inputs.python_ver }} --force
+      run: |
+        python3.10 -m pip install --user pipx
+        python3.10 -m pipx ensurepath
+        python3.10 -m pipx install poetry
       shell: bash
 
     - name: Load cached venv
