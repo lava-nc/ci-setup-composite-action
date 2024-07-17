@@ -22,6 +22,7 @@ runs:
         python3 -m pip install --user pipx
         python3 -m pipx ensurepath
         python3 -m pipx install poetry==${{ inputs.poetry_ver }}
+      shell: bash
 
     - name: Set up Python ${{ inputs.python_ver }}
       uses: actions/setup-python@v5
