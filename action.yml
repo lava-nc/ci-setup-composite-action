@@ -9,10 +9,20 @@ inputs:
     description: 'python version to use e.g. 3.10'
     required: false
     default: '3.10'
+  poetry_ver:
+    description: 'poetry version to use'
+    required: false
+    default: '1.8.3'
 
 runs:
   using: "composite"
-  steps:   
+  steps:
+    - name: Install Poetry
+      run: |
+        python3 -m pip install --user pipx
+        python3 -m pipx ensurepath
+        python3 -m pipx install poetry==${{ inputs.poetry_ver }}
+
     - name: Set up Python ${{ inputs.python_ver }}
       uses: actions/setup-python@v5
       with:
@@ -22,11 +32,11 @@ runs:
           **/poetry.lock
           **/pyproject.toml
 
-    - name: Install Poetry
+    - name: Install Poetry w/ updated python version
       run: |
-        python3.10 -m pip install --user pipx
-        python3.10 -m pipx ensurepath
-        python3.10 -m pipx install poetry
+        python${{ inputs.python_ver }} -m pip install --user pipx
+        python${{ inputs.python_ver }} -m pipx ensurepath
+        python${{ inputs.python_ver }} -m pipx install poetry==${{ inputs.poetry_ver }}
       shell: bash
 
     - name: Load cached venv
