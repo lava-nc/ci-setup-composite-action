@@ -19,8 +19,8 @@ runs:
         python-version: "${{ inputs.python_ver }}"
         cache: 'poetry'
         cache-dependency-path: |
-        **/poetry.lock
-        **/pyproject.toml
+          **/poetry.lock
+          **/pyproject.toml
 
     - name: Install Poetry
       run: |
