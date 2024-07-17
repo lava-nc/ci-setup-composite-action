@@ -14,10 +14,13 @@ runs:
   using: "composite"
   steps:   
     - name: Set up Python ${{ inputs.python_ver }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "${{ inputs.python_ver }}"
         cache: 'poetry'
+        cache-dependency-path: |
+        **/poetry.lock
+        **/pyproject.toml
 
     - name: Install Poetry
       run: |
