@@ -19,7 +19,13 @@ runs:
   steps:
     - name: Install Poetry
       run: |
-        python3 -m pip install --user pipx
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          python3 -m pip install --user pipx
+        elif [ "$RUNNER_OS" == "Windows" ]; then
+          python3 -m pip install --user pipx
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          brew install pipx
+        fi
         python3 -m pipx ensurepath
         python3 -m pipx install poetry==${{ inputs.poetry_ver }}
       shell: bash
@@ -34,20 +40,21 @@ runs:
           **/pyproject.toml
 
     - name: Install Poetry w/ updated python version (Linux)
-      run: |
-        python${{ inputs.python_ver }} -m pip install --user pipx
-        python${{ inputs.python_ver }} -m pipx ensurepath
-        python${{ inputs.python_ver }} -m pipx install poetry==${{ inputs.poetry_ver }}
+      run: |        
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          python${{ inputs.python_ver }} -m pip install --user pipx
+          python${{ inputs.python_ver }} -m pipx ensurepath
+          python${{ inputs.python_ver }} -m pipx install poetry==${{ inputs.poetry_ver }}
+        elif [ "$RUNNER_OS" == "Windows" ]; then
+          python -m pip install --user pipx
+          python -m pipx ensurepath
+          python -m pipx install poetry==${{ inputs.poetry_ver }}
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          python${{ inputs.python_ver }} -m pip install --user pipx
+          python${{ inputs.python_ver }} -m pipx ensurepath
+          python${{ inputs.python_ver }} -m pipx install poetry==${{ inputs.poetry_ver }}
+        fi        
       shell: bash
-      if: runner.os == 'Linux'
-
-    - name: Install Poetry w/ updated python version (Windows)
-      run: |
-        python -m pip install --user pipx
-        python -m pipx ensurepath
-        python -m pipx install poetry==${{ inputs.poetry_ver }}
-      shell: bash
-      if: runner.os == 'Windows'
 
     - name: Load cached venv
       id: cached-poetry-dependencies
