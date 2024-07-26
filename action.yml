@@ -24,6 +24,9 @@ runs:
         elif [ "$RUNNER_OS" == "Windows" ]; then
           python3 -m pip install --user pipx
         elif [ "$RUNNER_OS" == "macOS" ]; then
+          brew unlink python@3.9 || True
+          brew unlink python@3.8 || True
+          brew link --force python@3.12 || True
           brew install pipx
         fi
         python3 -m pipx ensurepath
